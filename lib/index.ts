@@ -10,16 +10,18 @@ const openai = new OpenAIApi(configuration);
  * Generates the emoji(s) that best represent a given string.
  * This is non-deterministic.
  * @param text the text/concept to generate emoji(s) for
- * @param count the number of emoji(s) to generate. If omitted, the AI will decide how many emojis are needed to best represent the string.
+ * @param options an object containing optional parameters
+ * @param options.count the number of emoji(s) to represent the text with. If omitted, the AI will decide how many emojis are needed to best represent the string.
  * @returns an array of emojis
  */
 export async function getEmojis(
   text: string,
-  count?: number | undefined
+  options: { count?: number } = {}
 ): Promise<string[]> {
   if (typeof text !== 'string' || text.length === 0) {
     throw new Error('text parameter must be a non-empty string');
   }
+  const count = options.count;
   if (count && (typeof count !== 'number' || count <= 0)) {
     throw new Error('optional count parameter must be a positive number');
   }
