@@ -17,6 +17,13 @@ export async function getEmojis(
   text: string,
   count?: number | undefined
 ): Promise<string[]> {
+  if (typeof text !== 'string' || text.length === 0) {
+    throw new Error('text parameter must be a non-empty string');
+  }
+  if (count && (typeof count !== 'number' || count <= 0)) {
+    throw new Error('optional count parameter must be a positive number');
+  }
+
   let prompt = `Please return the emoji or emojis that best describe the following text: "${text}".`;
   prompt += count
     ? ` Return ${count} emoji${count === 1 ? '' : 's'}.`

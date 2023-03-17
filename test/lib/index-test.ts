@@ -84,4 +84,20 @@ describe('getEmojis', () => {
 
     stub.restore();
   });
+
+  it('throws when text was empty', async () => {
+    await expect(() =>
+      getEmojis('')
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      '"text parameter must be a non-empty string"'
+    );
+  });
+
+  it('throws when count is negative', async () => {
+    await expect(() =>
+      getEmojis('foo', -1)
+    ).rejects.toThrowErrorMatchingInlineSnapshot(
+      '"optional count parameter must be a positive number"'
+    );
+  });
 });
