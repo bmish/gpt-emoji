@@ -18,9 +18,9 @@
   "license": "ISC",
   "author": "Bryan Mishkin",
   "type": "module",
-  "exports": "./dist/lib/index.js",
-  "main": "./dist/lib/index.js",
-  "types": "./dist/lib/index.d.ts",
+  "exports": "./dist/index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist/",
     "README.md"
