@@ -13,7 +13,7 @@ Uses [OpenAI's GPT-3.5](https://platform.openai.com/docs/models/gpt-3-5) `text-d
 
 - [Setup](#setup)
 - [API](#api)
-  - [`getEmojis(text: string, count?: number | undefined): string[]`](#getemojistext-string-count-number--undefined-string)
+  - [`getEmojis()`](#getemojis)
 - [Usage](#usage)
 
 ## Setup
@@ -32,9 +32,15 @@ export OPENAI_API_KEY=sk-...
 
 ## API
 
-### `getEmojis(text: string, count?: number | undefined): string[]`
+### `getEmojis()`
 
-Returns an array of emojis that best represent the given text.
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `text` | `string` | The text to get emojis for. |
+| `options` | `object` | Optional options for the function. |
+| `options.count` | `number` | The number of emojis to represent the text with. |
+
+Returns a string array of emojis that best represent the given text.
 
 Choose how many emojis to use, or let the AI decide how many are needed.
 
@@ -47,7 +53,7 @@ Specify that you want only one emoji:
 ```js
 import { getEmojis } from 'gpt-emoji';
 
-getEmojis('japanese cherry blossom festival', 1); // ['🌸']
+getEmojis('japanese cherry blossom festival', { count: 1 }); // ['🌸']
 ```
 
 Allow the AI to decide how many emojis to use:

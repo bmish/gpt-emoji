@@ -49,7 +49,9 @@ describe('getEmojis', () => {
       .stub(OpenAIApi.prototype, 'createCompletion')
       .resolves(generateCreateCompletionResponse('❗'));
 
-    const result = await getEmojis('japanese cherry blossom festival', 1);
+    const result = await getEmojis('japanese cherry blossom festival', {
+      count: 1,
+    });
 
     expect(Array.isArray(result)).toBe(true);
     expect(result.length).toStrictEqual(1);
@@ -63,7 +65,9 @@ describe('getEmojis', () => {
       .stub(OpenAIApi.prototype, 'createCompletion')
       .resolves(generateCreateCompletionResponse('❗,😈'));
 
-    const result = await getEmojis('japanese cherry blossom festival', 2);
+    const result = await getEmojis('japanese cherry blossom festival', {
+      count: 2,
+    });
 
     expect(Array.isArray(result)).toBe(true);
     expect(result.length).toStrictEqual(2);
@@ -77,7 +81,7 @@ describe('getEmojis', () => {
       .stub(OpenAIApi.prototype, 'createCompletion')
       .resolves(generateCreateCompletionResponse(undefined));
 
-    const result = await getEmojis('japanese cherry blossom festival', 2);
+    const result = await getEmojis('japanese cherry blossom festival');
 
     expect(Array.isArray(result)).toBe(true);
     expect(result.length).toStrictEqual(0);
@@ -95,7 +99,7 @@ describe('getEmojis', () => {
 
   it('throws when count is negative', async () => {
     await expect(() =>
-      getEmojis('foo', -1)
+      getEmojis('foo', { count: -1 })
     ).rejects.toThrowErrorMatchingInlineSnapshot(
       '"optional count parameter must be a positive number"'
     );
