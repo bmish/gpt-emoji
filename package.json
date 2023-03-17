@@ -1,0 +1,74 @@
+{
+  "name": "gpt-emoji",
+  "version": "0.0.0",
+  "description": "Get the emoji(s) that best represent the given text/concept.",
+  "keywords": [
+    "emoji",
+    "emojis",
+    "gpt"
+  ],
+  "homepage": "https://github.com/bmish/gpt-emoji#readme",
+  "bugs": {
+    "url": "https://github.com/bmish/gpt-emoji/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bmish/gpt-emoji.git"
+  },
+  "license": "ISC",
+  "author": "Bryan Mishkin",
+  "type": "module",
+  "exports": "./dist/lib/index.js",
+  "main": "./dist/lib/index.js",
+  "types": "./dist/lib/index.d.ts",
+  "files": [
+    "dist/",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "rm -rf dist && tsc --project tsconfig.build.json",
+    "lint": "npm-run-all --continue-on-error --aggregate-output --parallel \"lint:*\"",
+    "lint:docs": "markdownlint \"**/*.md\"",
+    "lint:docs:fix": "npm run lint:docs -- --fix",
+    "lint:js": "eslint --cache .",
+    "lint:js:fix": "npm run lint:js -- --fix",
+    "lint:package-json": "npmPkgJsonLint .",
+    "lint:package-json-sorting": "sort-package-json --check",
+    "lint:package-json-sorting:fix": "sort-package-json package.json",
+    "lint:types": "tsc",
+    "prepublishOnly": "npm run build",
+    "release": "release-it",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
+  },
+  "dependencies": {
+    "openai": "^3.2.1"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.5.0",
+    "@release-it-plugins/lerna-changelog": "^5.0.0",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^18.15.3",
+    "@types/sinon": "^10.0.13",
+    "@typescript-eslint/eslint-plugin": "^5.55.0",
+    "@typescript-eslint/parser": "^5.55.0",
+    "eslint": "^8.36.0",
+    "eslint-plugin-jest": "^27.2.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-square": "^24.0.0",
+    "jest": "^29.5.0",
+    "markdownlint-cli": "^0.33.0",
+    "npm-package-json-lint": "^6.4.0",
+    "npm-run-all": "^4.1.5",
+    "release-it": "^15.9.0",
+    "sinon": "^15.0.2",
+    "sort-package-json": "^2.4.1",
+    "ts-jest": "^29.0.5",
+    "typescript": "^5.0.2"
+  },
+  "engines": {
+    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  }
+}
