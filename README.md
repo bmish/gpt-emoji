@@ -7,7 +7,7 @@
 
 Get the emoji(s) that best represent the given text/concept.
 
-Uses [OpenAI's GPT-3.5](https://platform.openai.com/docs/models/gpt-3-5) `text-davinci-003` API.
+Uses [OpenAI's GPT-3.5](https://platform.openai.com/docs/models/gpt-3-5) `gpt-3.5-turbo` API.
 
 ## Table of contents<!-- omit from toc -->
 
@@ -36,11 +36,11 @@ export OPENAI_API_KEY=sk-...
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| `text` | `string` | The text to get emojis for. |
+| `text` | `string` or `string[]` | The string(s) to get emojis for. |
 | `options` | `object` | Optional options for the function. |
 | `options.count` | `number` | The number of emojis to represent the text with. |
 
-Returns a string array of emojis that best represent the given text.
+Returns a string array of emojis that best represent the given text, or a nested array of strings if multiple texts are given.
 
 Choose how many emojis to use, or let the AI decide how many are needed.
 
@@ -48,18 +48,22 @@ Note that this function is non-deterministic and could return different emojis e
 
 ## Usage
 
-Specify that you want only one emoji:
+A single string:
 
 ```js
 import { getEmojis } from 'gpt-emoji';
 
-getEmojis('japanese cherry blossom festival', { count: 1 }); // ['🌸']
+getEmojis('japanese cherry blossom festival');
+
+// ['🌸', '🇯🇵, '🎎']
 ```
 
-Allow the AI to decide how many emojis to use:
+Multiple strings and a custom count:
 
 ```js
 import { getEmojis } from 'gpt-emoji';
 
-getEmojis('japanese cherry blossom festival'); // ['🌸', '🇯🇵, '🎎']
+getEmojis(['atomic clock', 'machine learning'], { count: 2 });
+
+// [ [ '⏰', '☢️' ], [ '🤖', '🧠' ] ]
 ```
