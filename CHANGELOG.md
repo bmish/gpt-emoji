@@ -1,4 +1,14 @@
 
+
+## v0.2.1 (2023-03-19)
+
+#### :bug: Bug Fix
+* [#8](https://github.com/bmish/gpt-emoji/pull/8) Fix incorrect emoji count ([@bmish](https://github.com/bmish))
+
+#### Committers: 1
+- Bryan Mishkin ([@bmish](https://github.com/bmish))
+
+
 ## v0.2.0 (2023-03-18)
 
 #### :boom: Breaking Change

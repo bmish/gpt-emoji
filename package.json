@@ -1,6 +1,6 @@
 {
   "name": "gpt-emoji",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Get the emoji(s) that best represent the given text/concept.",
   "keywords": [
     "emoji",
