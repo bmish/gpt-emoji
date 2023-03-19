@@ -97,8 +97,8 @@ export async function getEmojis<T extends string | readonly string[]>(
       // > gpt-3.5-turbo-0301 does not always pay strong attention to system messages. Future models will be trained to pay stronger attention to system messages.
       // https://platform.openai.com/docs/guides/chat/introduction
       content: `${messageQuestion(textArray)} ${messageCount(
-        textArray.length
-      )} ${messageIntro} `,
+        count
+      )} ${messageIntro}`,
     },
   ]);
 
