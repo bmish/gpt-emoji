@@ -104,6 +104,34 @@ describe('getEmojis', () => {
     expect(result.length).toStrictEqual(1);
     expect(result.every((char) => isEmoji(char))).toBe(true);
 
+    expect(stub.callCount).toBe(1);
+    expect(stub.firstCall.args).toStrictEqual([
+      {
+        messages: [
+          {
+            content:
+              'You answer questions about which emoji or emojis best represent the given strings. You respond in the specified computer-readable format. Reply with only the emoji or emojis. The results for each string should be on a separate line in the same order as the input. Use CSV formatting for each line.',
+            role: 'system',
+          },
+          {
+            content:
+              'What are the best emojis to represent the strings: "machine learning", "rodeo"? Choose as many emojis as is needed to best represent each string.',
+            role: 'user',
+          },
+          {
+            content: '🤖,📈,💻,🧠\n🤠,🐴,🐂',
+            role: 'assistant',
+          },
+          {
+            content:
+              'What are the best emojis to represent the strings: "japanese cherry blossom festival"? Choose exactly 1 emoji to represent each string. You answer questions about which emoji or emojis best represent the given strings. You respond in the specified computer-readable format. Reply with only the emoji or emojis. The results for each string should be on a separate line in the same order as the input. Use CSV formatting for each line.',
+            role: 'user',
+          },
+        ],
+        model: 'gpt-3.5-turbo',
+      },
+    ]);
+
     stub.restore();
   });
 
