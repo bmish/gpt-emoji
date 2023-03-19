@@ -38,11 +38,9 @@ export OPENAI_API_KEY=sk-...
 | --- | --- | --- |
 | `text` | `string` or `string[]` | The string(s) to get emojis for. |
 | `options` | `object` | Optional options for the function. |
-| `options.count` | `number` | The number of emojis to represent the text with. |
+| `options.count` | `number` | The number of emojis to represent the text with. Default: The AI chooses how many are needed. |
 
 Returns a string array of emojis that best represent the given text, or a nested array of strings if multiple texts are given.
-
-Choose how many emojis to use, or let the AI decide how many are needed.
 
 Note that this function is non-deterministic and could return different emojis each time.
 
