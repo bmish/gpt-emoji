@@ -1,8 +1,10 @@
 import { getEmojis } from '../../lib/index.js';
-import { OpenAIApi } from 'openai';
+import { OpenAIApi, CreateChatCompletionResponse } from 'openai';
 import * as sinon from 'sinon';
 
-function generateCreateCompletionResponse(text: string | undefined) {
+function generateCreateChatCompletionResponse(
+  text: string
+): import('axios').AxiosResponse<CreateChatCompletionResponse, unknown> {
   return {
     data: {
       id: 'abc',
@@ -11,7 +13,10 @@ function generateCreateCompletionResponse(text: string | undefined) {
       model: 'text-davinci-003',
       choices: [
         {
-          text,
+          message: {
+            content: text,
+            role: 'assistant',
+          },
         },
       ],
     },
@@ -32,8 +37,8 @@ function isEmoji(char: string): boolean {
 describe('getEmojis', () => {
   it('behaves correctly with no count specified', async () => {
     const stub = sinon
-      .stub(OpenAIApi.prototype, 'createCompletion')
-      .resolves(generateCreateCompletionResponse('❗,😃,😈'));
+      .stub(OpenAIApi.prototype, 'createChatCompletion')
+      .resolves(generateCreateChatCompletionResponse('🌸,🎉,🎎'));
 
     const result = await getEmojis('japanese cherry blossom festival');
 
@@ -44,10 +49,52 @@ describe('getEmojis', () => {
     stub.restore();
   });
 
+  it('behaves correctly with array input of multiple strings', async () => {
+    const stub = sinon
+      .stub(OpenAIApi.prototype, 'createChatCompletion')
+      .resolves(
+        generateCreateChatCompletionResponse(
+          ['🌸,🎉,🎎', '🏮,🎑,🥮,🍊,🎉,🐲'].join('\n')
+        )
+      );
+
+    const result = await getEmojis([
+      'japanese cherry blossom festival',
+      'chinese lantern festival',
+    ]);
+
+    expect(Array.isArray(result)).toBe(true);
+    expect(result.length).toStrictEqual(2);
+    expect(result[0].length).toStrictEqual(3);
+    expect(result[1].length).toStrictEqual(6);
+    expect(result.every((str) => str.every((char) => isEmoji(char)))).toBe(
+      true
+    );
+
+    stub.restore();
+  });
+
+  it('behaves correctly with array input but a single string', async () => {
+    const stub = sinon
+      .stub(OpenAIApi.prototype, 'createChatCompletion')
+      .resolves(generateCreateChatCompletionResponse('🌸,🎉,🎎'));
+
+    const result = await getEmojis(['japanese cherry blossom festival']);
+
+    expect(Array.isArray(result)).toBe(true);
+    expect(result.length).toStrictEqual(1);
+    expect(result[0].length).toStrictEqual(3);
+    expect(result.every((str) => str.every((char) => isEmoji(char)))).toBe(
+      true
+    );
+
+    stub.restore();
+  });
+
   it('behaves correctly with count = 1', async () => {
     const stub = sinon
-      .stub(OpenAIApi.prototype, 'createCompletion')
-      .resolves(generateCreateCompletionResponse('❗'));
+      .stub(OpenAIApi.prototype, 'createChatCompletion')
+      .resolves(generateCreateChatCompletionResponse('🌸'));
 
     const result = await getEmojis('japanese cherry blossom festival', {
       count: 1,
@@ -62,8 +109,8 @@ describe('getEmojis', () => {
 
   it('behaves correctly with count = 2', async () => {
     const stub = sinon
-      .stub(OpenAIApi.prototype, 'createCompletion')
-      .resolves(generateCreateCompletionResponse('❗,😈'));
+      .stub(OpenAIApi.prototype, 'createChatCompletion')
+      .resolves(generateCreateChatCompletionResponse('🌸,🎉'));
 
     const result = await getEmojis('japanese cherry blossom festival', {
       count: 2,
@@ -76,15 +123,34 @@ describe('getEmojis', () => {
     stub.restore();
   });
 
-  it('returns empty array when response was empty', async () => {
+  it('returns empty array when response was empty with multiple strings', async () => {
     const stub = sinon
-      .stub(OpenAIApi.prototype, 'createCompletion')
-      .resolves(generateCreateCompletionResponse(undefined));
+      .stub(OpenAIApi.prototype, 'createChatCompletion')
+      .resolves(
+        generateCreateChatCompletionResponse(['🌸,🎉,🎎', ''].join('\n'))
+      );
 
-    const result = await getEmojis('japanese cherry blossom festival');
+    const result = await getEmojis([
+      'japanese cherry blossom festival',
+      'something with no results',
+    ]);
 
     expect(Array.isArray(result)).toBe(true);
-    expect(result.length).toStrictEqual(0);
+    expect(result.length).toStrictEqual(2);
+    expect(result[0].length).toStrictEqual(3);
+    expect(result[1].length).toStrictEqual(0);
+
+    stub.restore();
+  });
+
+  it('throws if response was empty with single input string', async () => {
+    const stub = sinon
+      .stub(OpenAIApi.prototype, 'createChatCompletion')
+      .resolves(generateCreateChatCompletionResponse(''));
+
+    await expect(() =>
+      getEmojis('abc')
+    ).rejects.toThrowErrorMatchingInlineSnapshot('"no message returned"');
 
     stub.restore();
   });
