@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@jest/globals": "^29.5.0",
-    "@release-it-plugins/lerna-changelog": "^5.0.0",
+    "@release-it-plugins/lerna-changelog": "^6.0.0",
     "@types/jest": "^29.5.0",
     "@types/node": "^20.1.0",
     "@types/sinon": "^10.0.13",
