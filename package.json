@@ -41,7 +41,7 @@
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
   },
   "dependencies": {
-    "openai": "^3.2.1"
+    "openai": "^4.4.0"
   },
   "devDependencies": {
     "@jest/globals": "^29.5.0",
